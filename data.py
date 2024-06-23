@@ -1,17 +1,17 @@
 import os
 import torch
-from typing import List, Tuple, Any, Union, Dict
-from torch.utils.data import Dataset, DataLoader
-from transformers import AutoProcessor
-from pathlib import Path
+import pandas as pd
 from PIL import Image
+from pathlib import Path
 from dataclasses import dataclass
-from configs import DatasetArgs, ModelArgs
+from typing import List, Tuple, Any, Union, Dict
+from torch.utils.data import Dataset
+from configs import DatasetArgs
 from transformers import (
+    AutoProcessor,
     LlavaForConditionalGeneration,
     LlavaProcessor,
 )
-
 
 
 
@@ -22,9 +22,9 @@ class QAImageOutput:
     a_input_ids:torch.Tensor
         
 class LlavaDataset(Dataset):
-    def __init__(self, data_path:Union[Path, str], processor:AutoProcessor) -> None:
+    def __init__(self, data_args:DatasetArgs) -> None:
         super(LlavaDataset).__init__()
-        self.chat_data, self.img_dir = self.build_dataset(data_path)
+        self.chat_data, self.img_dir = self.build_dataset(data_args.dataset_path)
         
     def build_dataset(self, data_dir: str) -> Tuple[List[Dict], Path]:
         data_dir = Path(data_dir)
@@ -47,7 +47,7 @@ class LlavaDataset(Dataset):
         image_path = self.image_dir.joinpath(cur_data.get('image'))
         return human_input, chatbot_output, image_path
     
-def build_q_a_img(processor:AutoProcessor, q_text:str, a_text:str, img_path:str) -> QAImageOutput
+def build_q_a_img(processor:AutoProcessor, q_text:str, a_text:str, img_path:str) -> QAImageOutput:
     messages = [
         {'role': 'systerm', 'content': "You are a helpful assistant."},
         {'role': 'user', 'content': q_text}
