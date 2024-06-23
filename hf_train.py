@@ -1,7 +1,8 @@
 import os
 import logging
+from model import load_llava_model_processor
 from data import LlavaDataset, LlavaDataCollector
-from configs import ModelArgs, DatasetArgs, TrainArgs
+from configs import ModelArgs, DatasetArgs, print_trainable_parameters
 from transformers import (
     Trainer,
     TrainingArguments,
@@ -14,11 +15,11 @@ def main():
     parser = HfArgumentParser((ModelArgs, DatasetArgs, TrainingArguments))
     model_args, dataset_args, train_args = parser.parse_args_into_dataclasses()
     
-    processor = LlavaProcessor.from_pretrained(model_args.model_name_or_path)
-    model = LlavaForConditionalGeneration.from_pretrained(model_args.model_name_or_path)
+    model, processor = load_llava_model_processor(model_args)
+    print_trainable_parameters(model)
     
     dataset = LlavaDataset(dataset_args)
-    collator = LlavaDataCollector(processor, dataset_args.max_seq_length)
+    collator = LlavaDataCollector(processor)
 
     trainer = Trainer(
         model=model,
