@@ -9,7 +9,7 @@ from transformers import (
     LlavaForConditionalGeneration,
     HfArgumentParser,
 )
-from load_model_dataset import load_llava_model_processor, get_llava_dataloader
+from  data import load_llava_model_processor, get_llava_dataloader
 logger = logging.getLogger(__name__)
 
 

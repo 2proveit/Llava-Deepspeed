@@ -1,6 +1,7 @@
+import torch
 from typing import Tuple
 from configs import ModelArgs
-from transformers import LlavaForConditionalGeneration
+from transformers import LlavaForConditionalGeneration, LlavaProcessor
 
 
 def load_llava_model_processor(model_args:ModelArgs) -> Tuple[LlavaForConditionalGeneration, LlavaProcessor]:
