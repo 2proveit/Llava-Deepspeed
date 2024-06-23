@@ -1,0 +1,16 @@
+deepspeed hf_train.py \
+    --deepspeed \
+    --model_name_or_path Qwen1.5-4B-Chat \
+    --train_module 'all' \
+    --dataset_path data/CC3M \
+    --max_seq_length 1024 \
+    --learning_rate 1e-4 \
+    --num_train_epochs 3 \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 8 \
+    --logging_steps 10 \
+    --save_strategy 'epoch' \
+    --save_total_limit 3 \
+    --bf16 true \
+    --fp16 false \
+    --report_to wandb \
