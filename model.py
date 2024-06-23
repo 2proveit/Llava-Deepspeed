@@ -7,8 +7,8 @@ from transformers import LlavaForConditionalGeneration, LlavaProcessor
 def load_llava_model_processor(model_args:ModelArgs) -> Tuple[LlavaForConditionalGeneration, LlavaProcessor]:
     model = LlavaForConditionalGeneration.from_pretrained(
         model_args.model_name_or_path,
-        dtype=torch.fp16,
-        low_cpu_mem_uesage=True
+        torch_dtype=torch.bfloat16,
+        low_cpu_mem_usage=True
     )
     
     processor = LlavaProcessor.from_pretrained(model_args.model_name_or_path)
